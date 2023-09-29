@@ -1,26 +1,26 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 
-import styles from './css/Message.module.css'
+import styles from "./css/Message.module.css";
 
-function Message({ type, msg }) {
-
-  const [visible, setVisible] = useState(false)
+function Message({ msg, type, update }) {
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (!msg) {
-      setVisible(false)
-      return
+      setVisible(false);
+      return false;
     }
 
-    setVisible(true)
+    setVisible(true);
 
     const timer = setTimeout(() => {
-      setVisible(false)
-    }, 3000)
+      setVisible(false);
+    }, 3000);
 
-    return () => clearTimeout(timer)
-
-  }, [msg])
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [update]);
 
   return (
     <>
@@ -30,7 +30,7 @@ function Message({ type, msg }) {
         </div>
       )}
     </>
-  )
+  );
 }
 
-export default Message
+export default Message;

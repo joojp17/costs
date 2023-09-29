@@ -5,10 +5,32 @@ import SubmitButton from "../form/SubmitButton";
 
 import styles from "../project/css/ProjectForm.module.css";
 
-function ServiceForm({handleSubmit, btnText, projectData}) {
-  function submit(e) {}
+function ServiceForm({ handleSubmit, btnText, projectData }) {
+  const [service, setService] = useState([]);
+  const [inputValue, setInputValue] = useState({
+    name: "",
+    cost: "",
+    description: "",
+  });
 
-  function handleChange(e) {}
+  function submit(e) {
+    e.preventDefault();
+    projectData.services.push(service);
+    handleSubmit(projectData);
+    setInputValue({
+      name: "",
+      cost: "",
+      description: "",
+    });
+  }
+
+  function handleChange(e) {
+    setService({ ...service, [e.target.name]: e.target.value });
+    setInputValue({
+      ...inputValue,
+      [e.target.name]: e.target.value,
+    });
+  }
 
   return (
     <form onSubmit={submit} className={styles.form}>
@@ -18,6 +40,7 @@ function ServiceForm({handleSubmit, btnText, projectData}) {
         name="name"
         placeholder="Insira o nome do serviço"
         handlerOnChange={handleChange}
+        value={inputValue.name}
       />
       <Input
         type="number"
@@ -25,6 +48,7 @@ function ServiceForm({handleSubmit, btnText, projectData}) {
         name="cost"
         placeholder="Insira o valor total"
         handlerOnChange={handleChange}
+        value={inputValue.cost}
       />
       <Input
         type="text"
@@ -32,8 +56,9 @@ function ServiceForm({handleSubmit, btnText, projectData}) {
         name="description"
         placeholder="Descreva o serviço"
         handlerOnChange={handleChange}
+        value={inputValue.description}
       />
-      <SubmitButton text={btnText}/>
+      <SubmitButton text={btnText} />
     </form>
   );
 }
