@@ -34,7 +34,6 @@ function Project() {
       .then((data) => {
         setProject(data);
         setServices(data.services);
-        console.log(services)
       })
       .catch((err) => console.log(err));
   }, [id]);
@@ -98,12 +97,38 @@ function Project() {
         setMessage("Serviço adicionado com sucesso!");
         setType("success");
         setUpdate(update + 1);
-        setShowServiceForm(false)
+        setShowServiceForm(false);
       })
       .catch((err) => console.log(err));
   }
 
-  function removeService() {}
+  function removeService(id, cost) {
+    const servicesUpdated = project.services.filter(
+      (service) => service.id !== id
+    );
+
+    const projectUpdated = project;
+
+    projectUpdated.services = servicesUpdated;
+    projectUpdated.cost = parseFloat(projectUpdated.cost) - parseFloat(cost);
+
+    fetch(`http://localhost:5000/projects/${projectUpdated.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(projectUpdated),
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        setProject(projectUpdated);
+        setServices(servicesUpdated);
+        setMessage("Serviço removido com sucesso!");
+        setType("success");
+        setUpdate(update + 1);
+      })
+      .catch((err) => console.log(err));
+  }
 
   function toggleProjectForm() {
     setShowProjectForm(!showProjectForm);
